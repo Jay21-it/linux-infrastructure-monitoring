@@ -1,13 +1,19 @@
-# Example only. Configure receiver credentials and endpoint securely.
+# Example only; adapt to the installed Alertmanager version and policy.
+global: {}
+
 route:
-  receiver: "default-receiver"
+  receiver: "linux-service-webhook"
   group_by: ["alertname", "instance"]
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 4h
 
 receivers:
-  - name: "default-receiver"
-    # Add a supported receiver configuration only after deciding your
-    # notification destination and securing any required credentials.
-    # Do not put real secrets in this public example.
+  - name: "linux-service-webhook"
+    webhook_configs:
+      - url: "http://127.0.0.1:5001/alertmanager"
+        send_resolved: true
+        http_config:
+          authorization:
+            type: Bearer
+            credentials_file: /etc/monitoring-webhook-token
