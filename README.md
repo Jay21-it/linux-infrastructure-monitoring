@@ -36,6 +36,7 @@ Prometheus-managed alerts route through Alertmanager. Grafana-managed alerts use
 | Need | Document |
 |---|---|
 | Full project story | [Project walkthrough](docs/PROJECT_WALKTHROUGH.md) |
+| Role layout and service units | [Installation layout](docs/INSTALLATION_LAYOUT.md) |
 | Architecture | [Architecture](docs/ARCHITECTURE.md) |
 | Implementation sequence | [Implementation guide](docs/IMPLEMENTATION.md) |
 | Dashboard / PromQL examples | [Dashboard queries](docs/DASHBOARDS_AND_PROMQL.md) |
@@ -53,7 +54,8 @@ Prometheus-managed alerts route through Alertmanager. Grafana-managed alerts use
 - **grafana/dashboards/** — importable starter dashboard JSON.
 - **webhook/receiver.py** — standard-library webhook bridge.
 - **webhook/monitoring-webhook.service** — systemd service unit.
-- **scripts/** — installer, Prometheus validator, guarded smoke test, and repository hygiene check.
+- **scripts/** — installer, all-in-one validation entrypoint, Prometheus validator, guarded smoke test, and repository hygiene check.
+- **systemd/** — example Prometheus, Alertmanager, and Node Exporter unit templates.
 - **tests/** — webhook payload state unit tests.
 - **.github/workflows/validate.yml** — automated syntax and unit checks.
 - **docs/** — implementation narrative, operations, troubleshooting, security, and validation.
@@ -67,7 +69,7 @@ python3 -m unittest discover -s tests -v
 python3 -m py_compile webhook/receiver.py
 bash -n scripts/*.sh
 python3 -m json.tool grafana/dashboards/linux-infrastructure-overview.json >/dev/null
-bash scripts/check_repo_hygiene.sh
+bash scripts/validate_all.sh
 ~~~
 
 If promtool is installed:
