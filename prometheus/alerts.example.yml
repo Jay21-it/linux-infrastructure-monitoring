@@ -1,0 +1,40 @@
+groups:
+  - name: linux-host-alerts
+    rules:
+      - alert: NodeExporterDown
+        expr: up{job="node"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node Exporter scrape is failing"
+          description: "Prometheus cannot scrape {{ $labels.instance }}."
+
+      - alert: HighCPUUsage
+        expr: |
+          100 - (
+            avg by (instance) (
+              rate(node_cpu_seconds_total{job="node", mode="idle"}[5m])
+            ) * 100
+          ) > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU usage is high"
+          description: "CPU usage on {{ $labels.instance }} has exceeded 85% for 5 minutes."
+
+      - alert: HighMemoryUsage
+        expr: |
+          100 * (
+            1 - (
+              node_memory_MemAvailable_bytes{job="node"}
+              / node_memory_MemTotal_bytes{job="node"}
+            )
+          ) > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memory usage is high"
+          description: "Memory usage on {{ $labels.instance }} has exceeded 90% for 5 minutes."
