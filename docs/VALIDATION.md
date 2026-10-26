@@ -1,54 +1,67 @@
 # Validation and Evidence Register
 
-This file intentionally distinguishes previously reported results from items requiring direct evidence. Before claiming a test as complete in a CV, interview, or public repository, capture the evidence and update this register.
+This register separates tests previously reported in lab notes from checks requiring fresh evidence.
 
 ## Status definitions
 
-- **Previously reported:** The project record says the test was observed, but the current public repository does not contain the raw evidence.
-- **Pending evidence:** Must not be described as fully verified until the specified check is captured.
-- **Not verified:** No successful test is recorded.
+- **Previously reported:** project notes say the test was observed; raw evidence is not included here.
+- **Pending evidence:** do not claim it fully verified until the evidence is captured.
+- **Not verified:** no successful test is recorded.
 
 ## Validation matrix
 
-| ID | Test | Current status | Evidence to attach |
+| ID | Test | Status | Evidence |
 |---|---|---|---|
-| V-01 | Prometheus config/rules validation | Previously reported as validated | Sanitized `promtool` output |
-| V-02 | Node Exporter target healthy | Previously monitored | Targets page and `up` query |
-| V-03 | Grafana Prometheus data source | Previously reported Save & test OK | Current Save & test screenshot |
+| V-01 | Prometheus config/rules validation | Previously reported validated | Sanitized promtool output |
+| V-02 | Node Exporter target healthy | Previously monitored | Targets page and up query |
+| V-03 | Grafana data source | Previously reported Save & test OK | Current screenshot |
 | V-04 | Dashboard panels | Dashboard recorded as created | Screenshot with units/time range |
-| V-05 | Grafana-managed rule fires | Previously observed in controlled lab test | Rule state, query result, timestamp |
-| V-06 | Webhook receives real firing event | Previously observed in receiver logs | Sanitized receiver log |
-| V-07 | `zabbix_sender` firing value | Previously reported `processed: 1; failed: 0` | Sanitized sender result |
-| V-08 | Zabbix trigger opens as expected | Pending direct UI evidence | Latest data and Problems view |
-| V-09 | Grafana returns to Normal after recovery | Recovery was reported in lab context; capture fresh evidence | Rule state and timestamps |
-| V-10 | Zabbix problem clears after recovery | Pending direct end-to-end evidence | Before/after Problems and Latest data |
-| V-11 | SMTP email notification | Not verified; earlier test encountered TLS/network issue | Successful delivery through approved relay |
+| V-05 | Grafana-managed rule fires | Previously observed in controlled test | Rule state, query, timestamp |
+| V-06 | Webhook receives firing event | Previously observed in logs | Sanitized receiver log |
+| V-07 | Sender firing value | Previously reported processed: 1; failed: 0 | Sanitized sender output |
+| V-08 | Zabbix trigger opens | Pending direct UI evidence | Latest data and Problems |
+| V-09 | Grafana rule recovers | Recovery reported; capture fresh evidence | Rule state and timestamps |
+| V-10 | Zabbix problem clears | Pending direct end-to-end evidence | Before/after Problems and Latest data |
+| V-11 | SMTP email | Not verified; earlier attempt hit TLS/network reset | Successful delivery through approved relay |
 
-## Evidence capture checklist
+## Evidence checklist
 
-- [ ] Screenshot of Prometheus targets and `up` query.
-- [ ] Screenshot of Grafana dashboard with readable units and time range.
-- [ ] Screenshot of Grafana-managed alert rule and labels.
-- [ ] Sanitized log showing actual firing notification received.
-- [ ] Sanitized `zabbix_sender` result.
-- [ ] Zabbix Latest data and Problems view showing alert active.
-- [ ] Grafana rule returned to Normal after service recovery.
-- [ ] Zabbix problem cleared after recovery.
-- [ ] No internal IPs, customer names, secrets, or sensitive details in public evidence.
+- [ ] Prometheus Targets and up query.
+- [ ] Grafana dashboard with readable units and time range.
+- [ ] Grafana rule labels and firing state.
+- [ ] Sanitized log showing a real firing notification.
+- [ ] Sanitized zabbix_sender result.
+- [ ] Zabbix Latest data and Problems showing the active event.
+- [ ] Grafana rule returns to Normal after recovery.
+- [ ] Zabbix problem clears after recovery.
+- [ ] No internal IPs, secrets, customer names, or private details in public evidence.
+
+## Repository checks
+
+GitHub Actions checks Python syntax/unit tests, shell syntax, dashboard JSON, and YAML parsing. These do not prove compatibility with every installed product version.
+
+~~~bash
+python3 -m unittest discover -s tests -v
+python3 -m py_compile webhook/receiver.py
+bash -n scripts/*.sh
+python3 -m json.tool grafana/dashboards/linux-infrastructure-overview.json >/dev/null
+bash scripts/check_repo_hygiene.sh
+bash scripts/validate_prometheus_examples.sh  # requires promtool
+~~~
 
 ## Test report template
 
-```text
+~~~text
 Test ID:
 Date/time and timezone:
 Environment:
 Preconditions:
-Action performed:
+Action:
 Expected result:
 Actual result:
-Evidence file:
+Evidence:
 Status: Pass / Fail / Blocked
-Notes and follow-up:
-```
+Notes/follow-up:
+~~~
 
-Do not mark a test as Passed until the acceptance criteria are met. Sender acceptance is not the same as trigger lifecycle validation.
+Do not mark a test passed until acceptance criteria are met. Sender acceptance is not the same as trigger lifecycle validation.
