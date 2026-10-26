@@ -1,24 +1,25 @@
 # Zabbix Trapper Integration
 
-## Components
+## Original lab note
 
-- A Zabbix host representing the monitored system or integration source.
-- A trapper item with a stable key and compatible value type.
-- A trigger expression that interprets firing and recovery values.
-- A webhook receiver that calls `zabbix_sender`.
+The original lab integration was reported to use trapper key prometheus.alert. Verify its item type and trigger logic before reuse.
 
-## Integration validation
+## Reference receiver in this repository
 
-1. Verify exact host name and item key in the Zabbix frontend.
-2. Verify the item type is Zabbix trapper and its data type matches the submitted value.
-3. Send a controlled test value from an authorized environment.
-4. Check Latest data to confirm the value arrived.
-5. Confirm the trigger opens on the intended firing value.
-6. Send a distinct recovery value.
-7. Confirm the trigger/problem clears according to the configured recovery expression.
+The included reference receiver uses key prometheus.alert.state and numeric unsigned values (1 = firing, 0 = resolved). Configure the same key and host name in /etc/monitoring-webhook.env and Zabbix. Do not mix this contract with the original text item without adapting the receiver and trigger.
 
-## Important design warning
+## Zabbix UI checklist
 
-A trigger that opens when the latest value is merely non-empty may not clear if a resolved event is also submitted as a non-empty string. Define a state contract (firing value and recovery value) and align the receiver, item type, and trigger expression. Test the full lifecycle; do not infer recovery from `zabbix_sender` success alone.
+1. Open the correct Zabbix host.
+2. Create a Zabbix trapper item.
+3. Set key prometheus.alert.state and information type Numeric (unsigned).
+4. Create a trigger with problem condition latest value 1 and recovery condition latest value 0.
+5. Ensure ZABBIX_HOST exactly matches the Zabbix host name.
+6. Send a controlled firing value and verify Latest data and Problems.
+7. Send recovery and confirm the same problem clears.
 
-Do not include real sender credentials or private server addresses in public documentation.
+Exact expression syntax varies by Zabbix version; validate it in the installed release.
+
+## Recovery warning
+
+A trigger based only on a non-empty text item may remain active when the resolved event is also non-empty. A zabbix_sender result of processed: 1; failed: 0 does not alone prove that a trigger opened or cleared.
