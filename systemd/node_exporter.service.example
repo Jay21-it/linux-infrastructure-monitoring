@@ -1,0 +1,25 @@
+# TEMPLATE ONLY: replace the example address with the client interface address.
+# Restrict access to TCP/9100 using the host firewall and network controls.
+[Unit]
+Description=Prometheus Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter --web.listen-address=192.0.2.20:9100
+Restart=on-failure
+RestartSec=5s
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target
