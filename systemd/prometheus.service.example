@@ -24,6 +24,7 @@ ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
 LimitNOFILE=65536
+ReadWritePaths=/var/lib/prometheus
 UMask=0027
 
 [Install]
