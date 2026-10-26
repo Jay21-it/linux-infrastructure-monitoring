@@ -1,0 +1,36 @@
+name: Validate project examples
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile Python and run unit tests
+        run: |
+          python -m py_compile webhook/receiver.py tests/test_receiver.py
+          python -m unittest discover -s tests -v
+      - name: Check shell syntax
+        run: bash -n scripts/*.sh
+      - name: Validate dashboard JSON
+        run: python -m json.tool grafana/dashboards/linux-infrastructure-overview.json >/dev/null
+      - name: Validate YAML examples
+        run: |
+          python -m pip install --disable-pip-version-check PyYAML
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+          paths = [Path('prometheus/prometheus.example.yml'), Path('prometheus/alerts.example.yml'), Path('alertmanager/alertmanager.example.yml')]
+          for path in paths:
+              with path.open(encoding='utf-8') as stream:
+                  yaml.safe_load(stream)
+              print(f'YAML syntax OK: {path}')
+          PY
