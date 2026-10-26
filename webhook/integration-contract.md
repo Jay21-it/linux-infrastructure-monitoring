@@ -1,30 +1,27 @@
 # Webhook Integration Contract
 
-This document defines the behavior the receiver should implement; it is not a substitute for reviewing the actual receiver source code.
+The included receiver accepts common Alertmanager and Grafana webhook payloads and converts known states to numeric Zabbix trapper values.
 
-## Expected responsibilities
+| Input condition | Value | Meaning |
+|---|---:|---|
+| Alertmanager firing / Grafana alerting | 1 | Active/problem |
+| All listed alerts resolved / Grafana OK | 0 | Recovery/normal |
+| No Data, Error, malformed, unknown | No value | Reject and investigate |
 
-1. Accept POST requests from authorized alerting systems.
-2. Validate content type and payload structure.
-3. Parse alert identity, status, labels, and relevant metadata.
-4. Map firing and resolved states to explicit Zabbix item values.
-5. Invoke `zabbix_sender` safely without shell-injection risk.
-6. Log enough context for troubleshooting without exposing secrets.
-7. Return appropriate HTTP status codes and handle malformed payloads.
+The receiver sends one state to one configured item. Use this only for one alert stream or a deliberately aggregated condition. Independent concurrent alert streams need separate keys or an event-aware integration so one alert's recovery cannot clear another alert.
 
-## State mapping
+## Endpoints
 
-| Incoming status | Required behavior |
-|---|---|
-| firing | Send the documented active/firing value |
-| resolved | Send the documented recovery value |
-| test payload | Handle safely; do not mistake a test for a production incident |
+- GET /healthz: simple process health response.
+- POST /alertmanager: Alertmanager JSON webhook.
+- POST /grafana: Grafana JSON webhook.
+- POST /: compatibility endpoint.
 
-## Reliability and security
+## Security and reliability
 
-- Authenticate or restrict sender access where possible.
-- Apply request timeouts and input size limits.
-- Avoid logging credentials or full sensitive payloads.
-- Handle duplicate notifications idempotently where feasible.
-- Monitor receiver service health.
-- Test malformed payloads and both firing/recovery paths.
+- Bind to loopback by default.
+- Require a bearer token for POST requests.
+- Enforce JSON content type and a maximum request size.
+- Never log payloads or authorization headers.
+- Use subprocess arguments rather than shell interpolation.
+- Reject unknown states rather than silently treating them as recovery.
