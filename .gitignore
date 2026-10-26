@@ -1,0 +1,23 @@
+# Secrets and local configuration
+.env
+.env.*
+*.pem
+*.key
+secrets/
+private/
+config.local.*
+credentials.*
+
+# Local runtime and generated files
+*.log
+*.pid
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+
+# Evidence should be reviewed before committing; uncomment if you prefer
+# to keep screenshots local until sanitized.
+# evidence/*
