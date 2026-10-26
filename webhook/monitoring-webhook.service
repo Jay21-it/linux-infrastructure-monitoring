@@ -1,0 +1,27 @@
+[Unit]
+Description=Linux monitoring alert webhook receiver
+After=network.target
+
+[Service]
+Type=simple
+User=monitoring-webhook
+Group=monitoring-webhook
+EnvironmentFile=/etc/monitoring-webhook.env
+ExecStart=/usr/bin/python3 /opt/monitoring-webhook/receiver.py
+Restart=on-failure
+RestartSec=3s
+TimeoutStopSec=10s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target
