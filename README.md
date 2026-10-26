@@ -109,4 +109,4 @@ Linux (RHEL/Rocky Linux lab), Prometheus, Node Exporter, Grafana, Alertmanager, 
 
 ## License
 
-See [MIT License](LICENSE).
+No license has been selected for this repository yet. Until a license is added, do not assume others have permission to reuse or redistribute the project files.
