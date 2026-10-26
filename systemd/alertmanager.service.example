@@ -22,6 +22,7 @@ ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
 LimitNOFILE=65536
+ReadWritePaths=/var/lib/alertmanager
 UMask=0027
 
 [Install]
