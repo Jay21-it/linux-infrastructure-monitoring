@@ -33,6 +33,7 @@
 | scripts/smoke_test_webhook.sh | Guarded synthetic firing/recovery pair |
 | scripts/check_repo_hygiene.sh | Heuristic credential/private-key scan |
 | tests/test_receiver.py | Unit tests for payload status mapping |
+| tests/test_http_receiver.py | HTTP tests for auth, firing/recovery, and ambiguous states |
 | tests/README.md | Test execution instructions |
 | .github/workflows/validate.yml | Automated CI checks |
 | zabbix/trapper-integration.md | Trapper item and trigger/recovery guide |
