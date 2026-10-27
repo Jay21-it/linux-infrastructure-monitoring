@@ -13,6 +13,7 @@
 | docs/TROUBLESHOOTING.md | Diagnostics from collection through Zabbix recovery |
 | docs/REFERENCE_IMPLEMENTATION.md | Receiver install and numeric trapper contract |
 | docs/VALIDATION.md | Evidence and validation matrix |
+| docs/LAB_VALIDATION_CHECKLIST.md | Safe live lab health, firing/recovery, and evidence steps |
 | docs/SECURITY.md | Public repository hygiene |
 | docs/CV_BULLETS.md | Resume descriptions and interview prompts |
 | prometheus/prometheus.example.yml | Sanitized Prometheus scrape configuration |
