@@ -1,5 +1,8 @@
 # TEMPLATE ONLY: replace the example address with the client interface address.
 # Restrict access to TCP/9100 using the host firewall and network controls.
+# systemd collector is disabled by default in upstream Node Exporter; this example
+# enables it and includes httpd.service so the dashboard's service panel can populate.
+# Source: https://github.com/prometheus/node_exporter
 [Unit]
 Description=Prometheus Node Exporter
 Wants=network-online.target
@@ -9,7 +12,7 @@ After=network-online.target
 User=node_exporter
 Group=node_exporter
 Type=simple
-ExecStart=/usr/local/bin/node_exporter --web.listen-address=192.0.2.20:9100
+ExecStart=/usr/local/bin/node_exporter --collector.systemd --collector.systemd.unit-include=httpd.service --web.listen-address=192.0.2.20:9100
 Restart=on-failure
 RestartSec=5s
 NoNewPrivileges=true
