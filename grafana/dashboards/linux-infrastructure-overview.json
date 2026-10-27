@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "Starter dashboard for a sanitized Linux monitoring lab using Node Exporter and Prometheus. Verify metric names and labels before use.",
+  "description": "Starter dashboard for a sanitized Linux monitoring lab using Node Exporter and Prometheus. Enable the Node Exporter systemd collector and include httpd.service to populate the service-state panel.",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -257,9 +257,9 @@
     },
     {
       "id": 6,
-      "title": "Network receive rate",
+      "title": "Network receive / transmit rate",
       "type": "timeseries",
-      "description": "Bytes per second on all non-loopback interfaces.",
+      "description": "Receive and transmit bytes per second on all non-loopback interfaces.",
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
@@ -295,7 +295,75 @@
         {
           "editorMode": "code",
           "expr": "rate(node_network_receive_bytes_total{device!=\"lo\",instance=~\"$instance\"}[5m])",
-          "legendFormat": "{{instance}}",
+          "legendFormat": "Receive {{instance}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "editorMode": "code",
+          "expr": "rate(node_network_transmit_bytes_total{device!=\"lo\",instance=~\"$instance\"}[5m])",
+          "legendFormat": "Transmit {{instance}}",
+          "range": true,
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "HTTPD service active state",
+      "type": "timeseries",
+      "description": "Requires the Node Exporter systemd collector and httpd.service to be included. A value of 1 is active; 0 is inactive if that series is present.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "showPoints": "always",
+            "spanNulls": false
+          },
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "node_systemd_unit_state{name=\"httpd.service\",state=\"active\",instance=~\"$instance\"}",
+          "legendFormat": "{{instance}} httpd.service",
           "range": true,
           "refId": "A"
         }
