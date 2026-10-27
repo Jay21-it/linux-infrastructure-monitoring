@@ -17,6 +17,7 @@
 | docs/CV_BULLETS.md | Resume descriptions and interview prompts |
 | prometheus/prometheus.example.yml | Sanitized Prometheus scrape configuration |
 | prometheus/alerts.example.yml | CPU, memory, and scrape-availability rules |
+| prometheus/alerts.test.yml | promtool unit test for NodeExporterDown firing behavior |
 | alertmanager/alertmanager.example.yml | Example webhook route |
 | grafana/dashboards/linux-infrastructure-overview.json | Importable starter dashboard |
 | grafana/grafana-alert-example.md | Grafana-managed alert guidance |
