@@ -28,6 +28,7 @@ This register separates tests previously reported in lab notes from checks requi
 
 - [ ] Prometheus Targets and up query.
 - [ ] Grafana dashboard with readable units and time range.
+- [ ] HTTPD active-state panel has data after enabling the Node Exporter systemd collector and including httpd.service.
 - [ ] Grafana rule labels and firing state.
 - [ ] Sanitized log showing a real firing notification.
 - [ ] Sanitized zabbix_sender result.
@@ -38,7 +39,7 @@ This register separates tests previously reported in lab notes from checks requi
 
 ## Repository checks
 
-GitHub Actions runs Python syntax checks and unit/HTTP-handler tests, shell syntax checks, dashboard JSON validation, YAML parsing, `promtool check config`, `promtool check rules`, and a `promtool test rules` case for the Node Exporter down alert using a pinned Prometheus container. These checks do not prove compatibility with every installed product version or demonstrate the live Zabbix problem lifecycle.
+GitHub Actions runs Python syntax checks and unit/HTTP-handler tests, shell syntax checks, dashboard JSON validation, YAML parsing, `promtool check config`, `promtool check rules`, and `promtool test rules` cases for exporter-down, high-memory, and high-CPU alerts using a pinned Prometheus container. These checks do not prove compatibility with every installed product version or demonstrate the live Zabbix problem lifecycle.
 
 ~~~bash
 python3 -m unittest discover -s tests -v
