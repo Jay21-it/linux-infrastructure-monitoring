@@ -22,5 +22,15 @@ class PayloadStateTests(unittest.TestCase):
         self.assertIsNone(payload_to_state({"message": "not an alert"}))
         self.assertIsNone(payload_to_state([]))
 
+    def test_unknown_nested_state_is_not_overridden_by_resolved_summary(self):
+        payload = {
+            "status": "resolved",
+            "alerts": [{"status": "no_data"}],
+        }
+        self.assertIsNone(payload_to_state(payload))
+
+    def test_empty_alerts_can_use_top_level_status(self):
+        self.assertEqual(payload_to_state({"status": "resolved", "alerts": []}), 0)
+
 if __name__ == "__main__":
     unittest.main()
