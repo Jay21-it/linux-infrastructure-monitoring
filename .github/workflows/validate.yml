@@ -38,3 +38,4 @@ jobs:
         run: |
           docker run --rm -v "$GITHUB_WORKSPACE:/workspace:ro" -w /workspace/prometheus --entrypoint /bin/promtool prom/prometheus:v3.15.1 check config prometheus.example.yml
           docker run --rm -v "$GITHUB_WORKSPACE:/workspace:ro" -w /workspace/prometheus --entrypoint /bin/promtool prom/prometheus:v3.15.1 check rules alerts.example.yml
+          docker run --rm -v "$GITHUB_WORKSPACE:/workspace:ro" -w /workspace/prometheus --entrypoint /bin/promtool prom/prometheus:v3.15.1 test rules alerts.test.yml
