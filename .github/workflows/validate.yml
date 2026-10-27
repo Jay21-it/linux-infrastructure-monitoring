@@ -16,7 +16,7 @@ jobs:
           python-version: '3.12'
       - name: Compile Python and run unit tests
         run: |
-          python -m py_compile webhook/receiver.py tests/test_receiver.py
+          python -m py_compile webhook/receiver.py tests/test_receiver.py tests/test_http_receiver.py
           python -m unittest discover -s tests -v
       - name: Check shell syntax
         run: bash -n scripts/*.sh
@@ -34,3 +34,7 @@ jobs:
                   yaml.safe_load(stream)
               print(f'YAML syntax OK: {path}')
           PY
+      - name: Validate Prometheus configuration and rules with promtool
+        run: |
+          docker run --rm -v "$GITHUB_WORKSPACE:/workspace:ro" -w /workspace/prometheus --entrypoint /bin/promtool prom/prometheus:v3.15.1 check config prometheus.example.yml
+          docker run --rm -v "$GITHUB_WORKSPACE:/workspace:ro" -w /workspace/prometheus --entrypoint /bin/promtool prom/prometheus:v3.15.1 check rules alerts.example.yml
