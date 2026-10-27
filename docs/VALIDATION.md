@@ -39,7 +39,7 @@ This register separates tests previously reported in lab notes from checks requi
 
 ## Repository checks
 
-GitHub Actions runs Python syntax checks and unit/HTTP-handler tests, shell syntax checks, dashboard JSON validation, YAML parsing, `promtool check config`, `promtool check rules`, and `promtool test rules` cases for exporter-down, high-memory, and high-CPU alerts using a pinned Prometheus container. These checks do not prove compatibility with every installed product version or demonstrate the live Zabbix problem lifecycle.
+GitHub Actions runs Python syntax checks and unit/HTTP-handler tests, shell syntax checks, local Markdown-link checks, a repository hygiene heuristic, dashboard JSON validation, YAML parsing, `promtool check config`, `promtool check rules`, and `promtool test rules` cases for exporter-down, high-memory, and high-CPU alerts using a pinned Prometheus container. These checks do not prove compatibility with every installed product version or demonstrate the live Zabbix problem lifecycle.
 
 ~~~bash
 python3 -m unittest discover -s tests -v
