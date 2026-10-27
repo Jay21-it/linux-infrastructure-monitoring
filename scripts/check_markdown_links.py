@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
-LINK_RE = re.compile(r"(?<!!)\\[[^\\]]+\\]\\(([^)]+)\\)")
+LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 EXTERNAL_PREFIXES = ("http://", "https://", "mailto:", "tel:")
 
 def main() -> int:
