@@ -34,6 +34,7 @@
 | scripts/validate_prometheus_examples.sh | Validates examples with promtool |
 | scripts/smoke_test_webhook.sh | Guarded synthetic firing/recovery pair |
 | scripts/check_repo_hygiene.sh | Heuristic credential/private-key scan |
+| scripts/check_markdown_links.py | Local Markdown link checker |
 | tests/test_receiver.py | Unit tests for payload status mapping |
 | tests/test_http_receiver.py | HTTP tests for auth, firing/recovery, and ambiguous states |
 | tests/README.md | Test execution instructions |
