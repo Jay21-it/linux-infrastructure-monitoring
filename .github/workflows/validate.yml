@@ -16,10 +16,14 @@ jobs:
           python-version: '3.12'
       - name: Compile Python and run unit tests
         run: |
-          python -m py_compile webhook/receiver.py tests/test_receiver.py tests/test_http_receiver.py
+          python -m py_compile webhook/receiver.py tests/test_receiver.py tests/test_http_receiver.py scripts/check_markdown_links.py
           python -m unittest discover -s tests -v
       - name: Check shell syntax
         run: bash -n scripts/*.sh
+      - name: Check local Markdown links
+        run: python scripts/check_markdown_links.py
+      - name: Check repository hygiene patterns
+        run: bash scripts/check_repo_hygiene.sh
       - name: Validate dashboard JSON
         run: python -m json.tool grafana/dashboards/linux-infrastructure-overview.json >/dev/null
       - name: Validate YAML examples
@@ -28,7 +32,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import yaml
-          paths = [Path('prometheus/prometheus.example.yml'), Path('prometheus/alerts.example.yml'), Path('alertmanager/alertmanager.example.yml')]
+          paths = [Path('prometheus/prometheus.example.yml'), Path('prometheus/alerts.example.yml'), Path('prometheus/alerts.test.yml'), Path('alertmanager/alertmanager.example.yml')]
           for path in paths:
               with path.open(encoding='utf-8') as stream:
                   yaml.safe_load(stream)
