@@ -37,6 +37,9 @@ def payload_to_state(payload: dict[str, Any]) -> int | None:
             return 1
         if states and not unknown:
             return 0
+        # A non-empty alerts array with unknown states is ambiguous. Do not
+        # fall back to the summary status and accidentally convert it to recovery.
+        return None
     for field in ("status", "state"):
         state = normal_state(payload.get(field))
         if state is not None:
