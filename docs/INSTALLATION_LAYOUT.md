@@ -21,7 +21,7 @@ The systemd directory contains templates for Prometheus, Alertmanager, and Node 
 
 They use example documentation addresses from the TEST-NET ranges and will not work unchanged. Edit binary paths, configuration paths, data directories, service accounts, and listen addresses before installing. Run each service under its own unprivileged account and make sure directories are owned by that account.
 
-For a target endpoint such as Node Exporter, allow TCP/9100 only from the authorized monitoring server or network. For Prometheus, Alertmanager, Grafana, and Zabbix, limit access to the management network. A loopback listener is appropriate only when all required callers share the same host/network namespace.
+For a target endpoint such as Node Exporter, allow TCP/9100 only from the authorized monitoring server or network. The systemd collector is disabled by default in upstream Node Exporter; enable it explicitly and configure the unit include filter if you want the HTTPD service-state panel/rule to work. See `systemd/node_exporter.service.example`. For Prometheus, Alertmanager, Grafana, and Zabbix, limit access to the management network. A loopback listener is appropriate only when all required callers share the same host/network namespace.
 
 ## Suggested bring-up order
 
