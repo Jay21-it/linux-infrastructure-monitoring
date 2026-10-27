@@ -9,5 +9,6 @@ TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 cp "$ROOT/prometheus/prometheus.example.yml" "$TMP/prometheus.example.yml"
 cp "$ROOT/prometheus/alerts.example.yml" "$TMP/alerts.example.yml"
-(cd "$TMP" && "$PROMTOOL" check config prometheus.example.yml && "$PROMTOOL" check rules alerts.example.yml)
-echo "Prometheus example config and rules passed promtool validation."
+cp "$ROOT/prometheus/alerts.test.yml" "$TMP/alerts.test.yml"
+(cd "$TMP" && "$PROMTOOL" check config prometheus.example.yml && "$PROMTOOL" check rules alerts.example.yml && "$PROMTOOL" test rules alerts.test.yml)
+echo "Prometheus config, rules, and alert-rule unit test passed promtool validation."
