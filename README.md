@@ -44,6 +44,7 @@ Prometheus-managed alerts route through Alertmanager. Grafana-managed alerts use
 | Receiver source and setup | [Reference implementation](docs/REFERENCE_IMPLEMENTATION.md) |
 | Troubleshooting | [Troubleshooting](docs/TROUBLESHOOTING.md) |
 | Validation and evidence | [Validation register](docs/VALIDATION.md) |
+| Live RHEL/Rocky testing steps | [Lab validation checklist](docs/LAB_VALIDATION_CHECKLIST.md) |
 | CV bullets | [CV wording](docs/CV_BULLETS.md) |
 | Complete file list | [File index](docs/FILE_INDEX.md) |
 
