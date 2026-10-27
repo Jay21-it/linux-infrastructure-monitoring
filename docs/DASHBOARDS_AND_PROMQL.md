@@ -74,6 +74,8 @@ node_systemd_unit_state{
 
 For a service-down alert, confirm how the metric behaves when the unit is inactive and whether the series disappears or returns zero. A query ending in `== 0` only works when a matching series exists and has value zero. Configure No Data behavior separately.
 
+The starter dashboard includes CPU, memory, root filesystem, scrape health, load average, network receive/transmit, and an HTTPD active-state panel. The service panel will show no data until the systemd collector exposes `httpd.service` and the Prometheus instance label matches the dashboard variable.
+
 ## Dashboard standards
 
 - Use consistent dashboard variables and labels.
