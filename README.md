@@ -1,5 +1,7 @@
 # Linux Infrastructure Monitoring & Alert Integration
 
+![Validation workflow](https://github.com/Jay21-it/linux-infrastructure-monitoring/actions/workflows/validate.yml/badge.svg)
+
 A portfolio project documenting a Linux monitoring lab built around **Prometheus, Node Exporter, Grafana, Alertmanager, a Python webhook receiver, and Zabbix**. This repository contains sanitized configuration examples, an importable dashboard, receiver source code, an installer, tests, an implementation walkthrough, and an evidence-based validation checklist.
 
 > **Scope and disclosure:** This is a sanitized lab/portfolio reference. It avoids private IP addresses, credentials, and employer-confidential configuration. It distinguishes previously reported lab tests from checks still requiring direct evidence. Confirm authorization before publishing employer-owned details.
