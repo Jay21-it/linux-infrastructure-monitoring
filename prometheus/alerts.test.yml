@@ -1,0 +1,25 @@
+# Prometheus rule unit test. Execute with:
+# promtool test rules alerts.test.yml
+rule_files:
+  - alerts.example.yml
+
+evaluation_interval: 15s
+
+tests:
+  - name: node exporter becomes firing when scrapes fail
+    interval: 15s
+    input_series:
+      - series: 'up{job="node", instance="linux-client.example.net:9100", environment="lab"}'
+        values: '0+0x10'
+    alert_rule_test:
+      - eval_time: 1m
+        alertname: NodeExporterDown
+        exp_alerts:
+          - exp_labels:
+              instance: linux-client.example.net:9100
+              job: node
+              environment: lab
+              severity: critical
+            exp_annotations:
+              summary: "Node Exporter scrape is failing"
+              description: "Prometheus cannot scrape linux-client.example.net:9100."
