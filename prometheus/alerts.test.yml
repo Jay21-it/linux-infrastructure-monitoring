@@ -1,4 +1,4 @@
-# Prometheus rule unit test. Execute with:
+# Prometheus rule unit tests. Execute with:
 # promtool test rules alerts.test.yml
 rule_files:
   - alerts.example.yml
@@ -6,11 +6,17 @@ rule_files:
 evaluation_interval: 15s
 
 tests:
-  - name: node exporter becomes firing when scrapes fail
+  - name: exporter down, memory high, and CPU high alert behavior
     interval: 15s
     input_series:
       - series: 'up{job="node", instance="linux-client.example.net:9100", environment="lab"}'
-        values: '0+0x10'
+        values: '0+0x40'
+      - series: 'node_memory_MemAvailable_bytes{job="node", instance="linux-client.example.net:9100", environment="lab"}'
+        values: '5+0x40'
+      - series: 'node_memory_MemTotal_bytes{job="node", instance="linux-client.example.net:9100", environment="lab"}'
+        values: '100+0x40'
+      - series: 'node_cpu_seconds_total{job="node", instance="linux-client.example.net:9100", environment="lab", cpu="0", mode="idle"}'
+        values: '0+1.5x40'
     alert_rule_test:
       - eval_time: 1m
         alertname: NodeExporterDown
@@ -23,3 +29,23 @@ tests:
             exp_annotations:
               summary: "Node Exporter scrape is failing"
               description: "Prometheus cannot scrape linux-client.example.net:9100."
+      - eval_time: 5m
+        alertname: HighMemoryUsage
+        exp_alerts:
+          - exp_labels:
+              instance: linux-client.example.net:9100
+              job: node
+              environment: lab
+              severity: warning
+            exp_annotations:
+              summary: "Memory usage is high"
+              description: "Memory usage on linux-client.example.net:9100 has exceeded 90% for 5 minutes."
+      - eval_time: 10m
+        alertname: HighCPUUsage
+        exp_alerts:
+          - exp_labels:
+              instance: linux-client.example.net:9100
+              severity: warning
+            exp_annotations:
+              summary: "CPU usage is high"
+              description: "CPU usage on linux-client.example.net:9100 has exceeded 85% for 5 minutes."
