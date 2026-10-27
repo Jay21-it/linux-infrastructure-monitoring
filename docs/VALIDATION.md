@@ -38,7 +38,7 @@ This register separates tests previously reported in lab notes from checks requi
 
 ## Repository checks
 
-GitHub Actions runs Python syntax checks and unit/HTTP-handler tests, shell syntax checks, dashboard JSON validation, YAML parsing, and `promtool check config` / `promtool check rules` using a pinned Prometheus container. These checks do not prove compatibility with every installed product version or demonstrate the live Zabbix problem lifecycle.
+GitHub Actions runs Python syntax checks and unit/HTTP-handler tests, shell syntax checks, dashboard JSON validation, YAML parsing, `promtool check config`, `promtool check rules`, and a `promtool test rules` case for the Node Exporter down alert using a pinned Prometheus container. These checks do not prove compatibility with every installed product version or demonstrate the live Zabbix problem lifecycle.
 
 ~~~bash
 python3 -m unittest discover -s tests -v
@@ -46,7 +46,7 @@ python3 -m py_compile webhook/receiver.py
 bash -n scripts/*.sh
 python3 -m json.tool grafana/dashboards/linux-infrastructure-overview.json >/dev/null
 bash scripts/check_repo_hygiene.sh
-bash scripts/validate_prometheus_examples.sh  # requires promtool
+bash scripts/validate_prometheus_examples.sh  # requires promtool; checks config, rules, and rule unit test
 ~~~
 
 ## Test report template
